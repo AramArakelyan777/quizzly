@@ -21,7 +21,7 @@ export function Quiz() {
         if (hasFetched.current) return
         hasFetched.current = true
 
-        fetch(process.env.QUIZ_API_URL)
+        fetch(process.env.REACT_APP_QUIZ_API_URL)
             .then((result) => {
                 if (!result.ok) throw new Error("Failed to fetch questions.")
                 return result.json()
