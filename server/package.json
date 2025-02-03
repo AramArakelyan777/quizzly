@@ -1,0 +1,14 @@
+{
+    "name": "server",
+    "version": "1.0.0",
+    "main": "index.js",
+    "author": "Aram Arakelyan",
+    "license": "MIT",
+    "type": "module",
+    "scripts": {
+        "dev": "nodemon index.js"
+    },
+    "devDependencies": {
+        "nodemon": "^3.1.9"
+    }
+}
