@@ -8,10 +8,10 @@ export function Timer({ onTimeUp, difficulty = "medium" }) {
             duration = 15
             break
         case "medium":
-            duration = 30
+            duration = 25
             break
         case "hard":
-            duration = 45
+            duration = 35
             break
         default:
             break

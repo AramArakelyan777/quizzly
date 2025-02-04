@@ -55,7 +55,13 @@ export function Quiz() {
 
         if (currentIndex < questions.length - 1)
             setCurrentIndex((prevIndex) => prevIndex + 1)
-        else navigate("/")
+        else
+            navigate("/leaderboard", {
+                state: {
+                    score:
+                        answer === question.correctAnswer ? score + 1 : score,
+                },
+            })
     }
 
     return (
