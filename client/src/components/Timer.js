@@ -1,6 +1,22 @@
 import { useState, useEffect } from "react"
 
-export function Timer({ duration = 30, onTimeUp }) {
+export function Timer({ onTimeUp, difficulty = "medium" }) {
+    let duration = 30
+
+    switch (difficulty) {
+        case "easy":
+            duration = 15
+            break
+        case "medium":
+            duration = 30
+            break
+        case "hard":
+            duration = 45
+            break
+        default:
+            break
+    }
+
     const [timeLeft, setTimeLeft] = useState(duration)
 
     useEffect(() => {

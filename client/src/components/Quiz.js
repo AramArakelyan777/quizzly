@@ -63,8 +63,8 @@ export function Quiz() {
             <h4>Score: {score}</h4>
             <Timer
                 key={currentIndex}
-                duration={10}
                 onTimeUp={() => handleAnswerClick(null)}
+                difficulty={question.difficulty}
             />
             <h2>
                 {currentIndex + 1}. {question.question.text}
