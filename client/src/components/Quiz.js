@@ -27,8 +27,11 @@ export function Quiz() {
                 dispatchQuizState({ type: "SET_QUESTIONS", payload: { data } })
             })
             .catch((error) => {
-                console.error(error)
-                dispatchQuizState({ type: "SET_ERROR", payload: { error } })
+                console.log(error)
+                dispatchQuizState({
+                    type: "SET_ERROR",
+                    payload: { error: error?.message || "Error" },
+                })
             })
             .finally(() => {
                 dispatchQuizState({

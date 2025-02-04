@@ -27,6 +27,9 @@ const reducer = (state, action) => {
         case "SET_CURRENT_INDEX":
             return { ...state, currentIndex: action.payload.currentIndex }
 
+        case "RESET_QUIZ":
+            return { ...initialState }
+
         default:
             return state
     }
