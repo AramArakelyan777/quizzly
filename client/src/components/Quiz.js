@@ -1,6 +1,7 @@
-import { useState, useEffect, useRef } from "react"
+import { useEffect, useRef, useContext } from "react"
 import { useNavigate } from "react-router-dom"
 import { Timer } from "./Timer"
+import { QuizContext } from "../context/QuizContext"
 
 const shuffleArray = (array) =>
     array
@@ -9,14 +10,9 @@ const shuffleArray = (array) =>
         .map(({ value }) => value)
 
 export function Quiz() {
-    const [questions, setQuestions] = useState([])
-    const [loading, setLoading] = useState(true)
-    const [error, setError] = useState("")
-    const [currentIndex, setCurrentIndex] = useState(0)
-    const [score, setScore] = useState(0)
-    const hasFetched = useRef(false)
-
+    const { quizState, dispatchQuizState } = useContext(QuizContext)
     const navigate = useNavigate()
+    const hasFetched = useRef(false)
 
     useEffect(() => {
         if (hasFetched.current) return
@@ -28,22 +24,26 @@ export function Quiz() {
                 return result.json()
             })
             .then((data) => {
-                setQuestions(data)
+                dispatchQuizState({ type: "SET_QUESTIONS", payload: { data } })
             })
             .catch((error) => {
                 console.error(error)
-                setError(error?.message || "Error fetching data")
+                dispatchQuizState({ type: "SET_ERROR", payload: { error } })
             })
             .finally(() => {
-                setLoading(false)
+                dispatchQuizState({
+                    type: "SET_LOADING",
+                    payload: { loading: false },
+                })
             })
-    }, [])
+    }, [dispatchQuizState])
 
-    if (loading) return <div>Loading...</div>
-    if (error) return <div>{error}</div>
-    if (questions.length === 0) return <div>No questions available.</div>
+    if (quizState.loading) return <div>Loading...</div>
+    if (quizState.error) return <div>{quizState.error}</div>
+    if (quizState.questions.length === 0)
+        return <div>No questions available.</div>
 
-    const question = questions[currentIndex]
+    const question = quizState.questions[quizState.currentIndex]
     const allAnswers = shuffleArray([
         question.correctAnswer,
         ...question.incorrectAnswers,
@@ -51,29 +51,37 @@ export function Quiz() {
 
     const handleAnswerClick = (answer) => {
         if (answer === question.correctAnswer)
-            setScore((prevScore) => prevScore + 1)
+            dispatchQuizState({
+                type: "SET_SCORE",
+                payload: { score: quizState.score + 1 },
+            })
 
-        if (currentIndex < questions.length - 1)
-            setCurrentIndex((prevIndex) => prevIndex + 1)
+        if (quizState.currentIndex < quizState.questions.length - 1)
+            dispatchQuizState({
+                type: "SET_CURRENT_INDEX",
+                payload: { currentIndex: quizState.currentIndex + 1 },
+            })
         else
             navigate("/leaderboard", {
                 state: {
                     score:
-                        answer === question.correctAnswer ? score + 1 : score,
+                        answer === question.correctAnswer
+                            ? quizState.score + 1
+                            : quizState.score,
                 },
             })
     }
 
     return (
         <div>
-            <h4>Score: {score}</h4>
+            <h4>Score: {quizState.score}</h4>
             <Timer
-                key={currentIndex}
+                key={quizState.currentIndex}
                 onTimeUp={() => handleAnswerClick(null)}
                 difficulty={question.difficulty}
             />
             <h2>
-                {currentIndex + 1}. {question.question.text}
+                {quizState.currentIndex + 1}. {question.question.text}
             </h2>
             {allAnswers.map((answer) => (
                 <button key={answer} onClick={() => handleAnswerClick(answer)}>
