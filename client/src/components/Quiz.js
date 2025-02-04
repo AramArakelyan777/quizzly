@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react"
 import { useNavigate } from "react-router-dom"
+import { Timer } from "./Timer"
 
 const shuffleArray = (array) =>
     array
@@ -60,8 +61,13 @@ export function Quiz() {
     return (
         <div>
             <h4>Score: {score}</h4>
+            <Timer
+                key={currentIndex}
+                duration={10}
+                onTimeUp={() => handleAnswerClick(null)}
+            />
             <h2>
-                {currentIndex + 1}) {question.question.text}
+                {currentIndex + 1}. {question.question.text}
             </h2>
             {allAnswers.map((answer) => (
                 <button key={answer} onClick={() => handleAnswerClick(answer)}>
