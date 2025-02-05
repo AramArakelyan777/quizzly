@@ -1,19 +1,17 @@
 import { useState, useEffect } from "react"
 
 export function Timer({ onTimeUp, difficulty = "medium" }) {
-    let duration = 30
+    let duration
 
     switch (difficulty) {
         case "easy":
             duration = 15
             break
-        case "medium":
-            duration = 25
-            break
         case "hard":
-            duration = 35
+            duration = 30
             break
         default:
+            duration = 20
             break
     }
 
