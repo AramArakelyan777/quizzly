@@ -13,7 +13,7 @@ const initialState = {
 const reducer = (state, action) => {
     switch (action.type) {
         case "SET_QUESTIONS":
-            return { ...state, questions: action.payload.data }
+            return { ...state, questions: action.payload.questions }
 
         case "SET_ERROR":
             return { ...state, error: action.payload.error }
