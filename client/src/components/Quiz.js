@@ -1,5 +1,5 @@
 import { useEffect, useRef, useContext } from "react"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useLocation } from "react-router-dom"
 import { Timer } from "./Timer"
 import { QuizContext } from "../context/QuizContext"
 import { getQuiz } from "../service/quizService"
@@ -14,6 +14,7 @@ export function Quiz() {
     const { quizState, dispatchQuizState } = useContext(QuizContext)
     const navigate = useNavigate()
     const hasFetched = useRef(false)
+    const { state } = useLocation()
 
     useEffect(() => {
         if (hasFetched.current) return
@@ -72,6 +73,7 @@ export function Quiz() {
                         answer === question.correctAnswer
                             ? quizState.score + 1
                             : quizState.score,
+                    username: state.username,
                 },
             })
     }
