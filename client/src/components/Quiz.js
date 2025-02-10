@@ -66,7 +66,7 @@ export function Quiz() {
                 type: "SET_CURRENT_INDEX",
                 payload: { currentIndex: quizState.currentIndex + 1 },
             })
-        else
+        else {
             navigate("/leaderboard", {
                 state: {
                     score:
@@ -76,6 +76,14 @@ export function Quiz() {
                     username: state.username,
                 },
             })
+            localStorage.setItem(
+                "score",
+                answer === question.correctAnswer
+                    ? quizState.score + 1
+                    : quizState.score
+            )
+            localStorage.setItem("username", state.username)
+        }
     }
 
     return (
